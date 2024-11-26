@@ -1,0 +1,128 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8018521931751637052",
+      "lastPropertyId": "6:4747883386534095176",
+      "name": "Category",
+      "properties": [
+        {
+          "id": "1:89173563767971325",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2726727364190845540",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:1522054860107600442",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:4908143192444839447",
+          "name": "color",
+          "type": 9
+        },
+        {
+          "id": "5:2505949800818249213",
+          "name": "icon",
+          "type": 9
+        },
+        {
+          "id": "6:4747883386534095176",
+          "name": "date",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:775109665074566192",
+      "lastPropertyId": "3:5134178059642861399",
+      "name": "Settings",
+      "properties": [
+        {
+          "id": "1:7370203846516532933",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1981865063178022147",
+          "name": "language",
+          "type": 9
+        },
+        {
+          "id": "3:5134178059642861399",
+          "name": "theme",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:8963278023357846170",
+      "lastPropertyId": "7:5934878087871240939",
+      "name": "Transaction",
+      "properties": [
+        {
+          "id": "1:1361944202770413070",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4194277340457331981",
+          "name": "categoryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:8447702244186322258",
+          "relationTarget": "Category"
+        },
+        {
+          "id": "3:384126607506449827",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:4316609310646399301",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:8408347837768155235",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "6:3016499982146829120",
+          "name": "amount",
+          "type": 7
+        },
+        {
+          "id": "7:5934878087871240939",
+          "name": "favorite",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "3:8963278023357846170",
+  "lastIndexId": "1:8447702244186322258",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
