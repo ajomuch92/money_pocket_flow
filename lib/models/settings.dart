@@ -1,13 +1,30 @@
-import 'dart:ffi';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:money_pocket_flow/data/base_entity.dart';
 
-import 'package:objectbox/objectbox.dart';
+part 'settings.g.dart';
 
-@Entity()
-class Settings {
-  @Id()
-  int id = 0;
-
-  Double? currencySymbol;
+@JsonSerializable()
+class Settings extends BaseEntity {
+  String? currencySymbol;
   String? language;
   String? theme;
+
+  Settings({this.currencySymbol, this.language, this.theme});
+
+  Map<String, dynamic> toJson() => _$SettingsToJson(this);
+
+  factory Settings.fromJson(Map<String, dynamic> map) =>
+      _$SettingsFromJson(map);
+
+  static Map<String, String> getFields() {
+    return {
+      'id': 'INTEGER PRIMARY KEY AUTOINCREMENT',
+      'currencySymbol': 'TEXT',
+      'language': 'TEXT',
+      'theme': 'TEXT'
+    };
+  }
+
+  @override
+  void fromMap(Map<String, dynamic> map) => _$SettingsFromJson(map);
 }
