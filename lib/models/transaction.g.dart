@@ -6,7 +6,8 @@ part of 'transaction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
+TransactionModel _$TransactionFromJson(Map<String, dynamic> json) =>
+    TransactionModel(
       categoryId: (json['categoryId'] as num?)?.toInt(),
       amount: (json['amount'] as num?)?.toDouble(),
       type: json['type'] as String?,
@@ -16,7 +17,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       favorite: json['favorite'] as bool?,
     )..id = (json['id'] as num?)?.toInt();
 
-Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
+Map<String, dynamic> _$TransactionToJson(TransactionModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'categoryId': instance.categoryId,

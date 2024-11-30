@@ -4,14 +4,14 @@ import 'package:money_pocket_flow/data/base_entity.dart';
 part 'transaction.g.dart';
 
 @JsonSerializable()
-class Transaction extends BaseEntity {
+class TransactionModel extends BaseEntity {
   int? categoryId;
   double? amount;
   String? type, description;
   bool? favorite;
   DateTime? date;
 
-  Transaction(
+  TransactionModel(
       {this.categoryId,
       this.amount,
       this.type,
@@ -21,7 +21,7 @@ class Transaction extends BaseEntity {
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
-  factory Transaction.fromJson(Map<String, dynamic> map) =>
+  factory TransactionModel.fromJson(Map<String, dynamic> map) =>
       _$TransactionFromJson(map);
 
   static Map<String, String> getFields() {
