@@ -19,6 +19,7 @@ class TransactionModel extends BaseEntity {
       this.date,
       this.favorite});
 
+  @override
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   factory TransactionModel.fromJson(Map<String, dynamic> map) =>

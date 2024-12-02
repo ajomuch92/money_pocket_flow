@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:money_pocket_flow/data/database_manager.dart';
 import 'package:money_pocket_flow/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await DatabaseManager.initDatabase();
   runApp(const MyApp());
 }
 

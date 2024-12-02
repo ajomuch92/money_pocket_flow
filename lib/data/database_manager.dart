@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'base_entity.dart';
+import 'package:money_pocket_flow/models/index.dart';
 
 class DatabaseManager {
   static final DatabaseManager _instance = DatabaseManager._internal();
@@ -19,12 +23,12 @@ class DatabaseManager {
   // Obtener la instancia de la base de datos.
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDatabase();
+    _database = await createDatabase();
     return _database!;
   }
 
   // Inicializar la base de datos y crear las tablas dinámicamente.
-  Future<Database> _initDatabase() async {
+  Future<Database> createDatabase() async {
     final path = join(await getDatabasesPath(), 'app_database.db');
     return openDatabase(
       path,
@@ -39,5 +43,21 @@ class DatabaseManager {
         }
       },
     );
+  }
+
+  static Future<void> initDatabase() async {
+    if (Platform.isWindows || Platform.isLinux) {
+      sqfliteFfiInit();
+    }
+    final dbManager = DatabaseManager();
+    dbManager.registerEntity<TransactionModel>('transactions');
+    dbManager.registerEntity<Settings>('settings');
+    dbManager.registerEntity<Category>('categories');
+    await dbManager.createDatabase();
+    // final transactionRepo = Repository<TransactionModel>(
+    //   dbManager,
+    //   'transactions',
+    //   ((map) => TransactionModel.fromJson(map)) as TransactionModel Function(),
+    // );
   }
 }

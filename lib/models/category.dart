@@ -12,6 +12,7 @@ class Category extends BaseEntity {
 
   Category({this.name, this.color, this.icon, this.date});
 
+  @override
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 
   factory Category.fromJson(Map<String, dynamic> map) =>

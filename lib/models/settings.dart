@@ -11,6 +11,7 @@ class Settings extends BaseEntity {
 
   Settings({this.currencySymbol, this.language, this.theme});
 
+  @override
   Map<String, dynamic> toJson() => _$SettingsToJson(this);
 
   factory Settings.fromJson(Map<String, dynamic> map) =>
