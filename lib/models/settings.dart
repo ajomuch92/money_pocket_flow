@@ -27,5 +27,11 @@ class Settings extends BaseEntity {
   }
 
   @override
-  void fromMap(Map<String, dynamic> map) => _$SettingsFromJson(map);
+  void fromMap(Map<String, dynamic> map) {
+    Settings newSettings = _$SettingsFromJson(map);
+    id = newSettings.id;
+    currencySymbol = newSettings.currencySymbol;
+    theme = newSettings.currencySymbol;
+    language = newSettings.language;
+  }
 }
