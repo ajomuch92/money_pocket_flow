@@ -35,9 +35,27 @@ class Repository<T extends BaseEntity> {
     );
   }
 
-  Future<List<T>> getAll() async {
+  Future<List<T>> getAll(
+      {bool? distinct,
+      List<String>? columns,
+      String? where,
+      List<Object?>? whereArgs,
+      String? groupBy,
+      String? having,
+      String? orderBy,
+      int? limit,
+      int? offset}) async {
     final db = await _dbManager.database;
-    final maps = await db.query(_tableName);
+    final maps = await db.query(_tableName,
+        distinct: distinct,
+        columns: columns,
+        where: where,
+        whereArgs: whereArgs,
+        groupBy: groupBy,
+        having: having,
+        orderBy: orderBy,
+        limit: limit,
+        offset: offset);
     return maps.map((map) {
       final entity = entityFactory();
       entity.fromMap(map);
