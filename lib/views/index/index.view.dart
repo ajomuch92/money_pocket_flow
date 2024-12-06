@@ -1,7 +1,11 @@
+import 'package:animated_visibility/animated_visibility.dart';
 import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:money_pocket_flow/views/home/home.view.dart';
 import 'package:money_pocket_flow/views/index/index.controller.dart';
+import 'package:money_pocket_flow/views/settings/settings.view.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -37,6 +41,30 @@ class _IndexState extends State<Index> {
                   child: Text(value, key: ValueKey<String>(value)));
             }),
         centerTitle: true,
+        actions: [
+          SignalBuilder(
+            signal: controller.selectedPage,
+            builder: (context, value, child) {
+              return AnimatedVisibility(
+                visible: value == 2,
+                enter: fadeIn() + scaleIn(),
+                exit: fadeOut() + scaleOut(),
+                enterDuration: const Duration(milliseconds: 300),
+                exitDuration: const Duration(milliseconds: 300),
+                child: SignalBuilder(
+                    signal: controller.isEditting,
+                    builder: (context, isEditting, _) {
+                      return IconButton(
+                        onPressed: controller.onActionButton,
+                        icon: isEditting
+                            ? Icon(MdiIcons.close)
+                            : const Icon(Icons.edit),
+                      );
+                    }),
+              );
+            },
+          )
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),
@@ -45,44 +73,58 @@ class _IndexState extends State<Index> {
           controller: controller.pageController,
           onPageChanged: controller.onPageChanged,
           children: <Widget>[
-            Center(
-              child: Text('First Page'),
-            ),
+            Home(),
             Center(
               child: Text('Second Page'),
             ),
-            Center(
-              child: Text('Third Page'),
-            ),
+            Settings(),
           ],
         ),
       ),
       bottomNavigationBar: SignalBuilder<int>(
-          signal: controller.selectedPage,
-          builder: (context, value, child) {
-            return FlashyTabBar(
-              selectedIndex: value,
-              showElevation: true,
-              onItemSelected: controller.setSelectedPage,
-              items: [
-                FlashyTabBarItem(
-                  icon: const Icon(Icons.home),
-                  title: const Text('Inicio'),
-                  activeColor: Colors.blueAccent,
-                ),
-                FlashyTabBarItem(
-                  icon: const Icon(Icons.category),
-                  title: const Text('Categorías'),
-                  activeColor: Colors.blueAccent,
-                ),
-                FlashyTabBarItem(
-                  icon: const Icon(Icons.settings),
-                  title: const Text('Configuración'),
-                  activeColor: Colors.blueAccent,
-                ),
-              ],
-            );
-          }),
+        signal: controller.selectedPage,
+        builder: (context, value, child) {
+          return FlashyTabBar(
+            selectedIndex: value,
+            showElevation: true,
+            onItemSelected: controller.setSelectedPage,
+            items: [
+              FlashyTabBarItem(
+                icon: const Icon(Icons.home),
+                title: const Text('Inicio'),
+                activeColor: Colors.blueAccent,
+              ),
+              FlashyTabBarItem(
+                icon: const Icon(Icons.category),
+                title: const Text('Categorías'),
+                activeColor: Colors.blueAccent,
+              ),
+              FlashyTabBarItem(
+                icon: const Icon(Icons.settings),
+                title: const Text('Configuración'),
+                activeColor: Colors.blueAccent,
+              ),
+            ],
+          );
+        },
+      ),
+      floatingActionButton: SignalBuilder(
+        signal: controller.selectedPage,
+        builder: (context, value, child) {
+          return AnimatedVisibility(
+            visible: value != 2,
+            enter: fadeIn() + scaleIn(),
+            exit: fadeOut() + scaleOut(),
+            enterDuration: const Duration(milliseconds: 300),
+            exitDuration: const Duration(milliseconds: 300),
+            child: FloatingActionButton(
+              onPressed: () {},
+              disabledElevation: 0,
+              child: const Icon(Icons.add),
+            ),
+          );
+        },
+      ),
     );
   }
 }
