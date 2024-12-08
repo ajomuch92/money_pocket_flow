@@ -53,6 +53,8 @@ dependencies:
   getwidget: ^4.0.0
   sqflite_common_ffi: ^2.3.4+3
   event_bus: ^2.0.1
+  flutter_color: ^2.1.0
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
