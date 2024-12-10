@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:money_pocket_flow/views/category/category.view.dart';
 import 'package:money_pocket_flow/views/home/home.view.dart';
 import 'package:money_pocket_flow/views/index/index.controller.dart';
 import 'package:money_pocket_flow/views/settings/settings.view.dart';
@@ -72,11 +73,9 @@ class _IndexState extends State<Index> {
         child: PageView(
           controller: controller.pageController,
           onPageChanged: controller.onPageChanged,
-          children: <Widget>[
+          children: const <Widget>[
             Home(),
-            Center(
-              child: Text('Second Page'),
-            ),
+            Category(),
             Settings(),
           ],
         ),
