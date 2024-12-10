@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 class ErrorEmpty extends StatelessWidget {
   final String message;
   final Widget? child;
-  const ErrorEmpty({super.key, required this.message, this.child});
+  final bool fullHeight;
+  const ErrorEmpty(
+      {super.key, required this.message, this.child, this.fullHeight = true});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      height: fullHeight ? MediaQuery.of(context).size.height : null,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment:
+            fullHeight ? MainAxisAlignment.center : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           child ?? Container(),
