@@ -16,7 +16,9 @@ class CategoryTile extends StatelessWidget {
         category.name!,
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text(DateFormat.yMd().format(category.date!)),
+      subtitle: Text(category.date == null
+          ? 'N/A'
+          : DateFormat.yMd().format(category.date!)),
       leading: Container(
         width: 64,
         height: 64,
