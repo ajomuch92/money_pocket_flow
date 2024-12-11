@@ -29,5 +29,12 @@ class Category extends BaseEntity {
   }
 
   @override
-  void fromMap(Map<String, dynamic> map) => _$CategoryFromJson(map);
+  void fromMap(Map<String, dynamic> map) {
+    Category category = _$CategoryFromJson(map);
+    id = category.id;
+    name = category.name;
+    color = category.color;
+    icon = category.icon;
+    date = category.date;
+  }
 }
