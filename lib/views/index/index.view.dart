@@ -117,7 +117,9 @@ class _IndexState extends State<Index> {
             enterDuration: const Duration(milliseconds: 300),
             exitDuration: const Duration(milliseconds: 300),
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                controller.onFloatinActionButton(context);
+              },
               disabledElevation: 0,
               child: const Icon(Icons.add),
             ),

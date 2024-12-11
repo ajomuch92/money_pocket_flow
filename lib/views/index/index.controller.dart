@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:go_router/go_router.dart';
 import 'package:money_pocket_flow/utils/bus.dart';
 
 class IndexController {
@@ -49,5 +50,16 @@ class IndexController {
       _eventBus.fire(EventModel(name: 'begin-edit-settings'));
     }
     isEditting.value = !isEditting.value;
+  }
+
+  void onFloatinActionButton(BuildContext context) {
+    if (selectedPage.value == 0) {
+    } else if (selectedPage.value == 1) {
+      context.push('/new-category').then((value) {
+        if (value == true) {
+          _eventBus.fire(EventModel(name: 'reload-categories'));
+        }
+      });
+    }
   }
 }
