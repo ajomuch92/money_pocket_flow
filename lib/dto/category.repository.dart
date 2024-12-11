@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_color/flutter_color.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:money_pocket_flow/data/database_manager.dart';
 import 'package:money_pocket_flow/data/repository.dart';
 import 'package:money_pocket_flow/models/index.dart';
-import 'package:money_pocket_flow/utils/icons.dart';
 
 class CategoryRepository {
   final DatabaseManager dbManager = DatabaseManager();
@@ -16,18 +12,21 @@ class CategoryRepository {
 
   Future<List<Category>> getCategories() async {
     try {
-      List<Category> list = await categoryRepository.getAll(limit: 1);
-      list.add(Category()
-        ..name = 'Test'
-        ..icon = getNameByIcon(MdiIcons.accessPointMinus)
-        ..color = const Color.fromRGBO(255, 0, 0, 1).asHexString
-        ..date = DateTime.now());
-      list.add(Category()
-        ..name = 'Test'
-        ..icon = getNameByIcon(MdiIcons.abTesting)
-        ..color = const Color.fromRGBO(255, 255, 0, 1).asHexString
-        ..date = DateTime.now());
+      List<Category> list = await categoryRepository.getAll();
       return list;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  saveCategory(Category category) async {
+    try {
+      if (category.id != null) {
+        await categoryRepository.update(category);
+      } else {
+        int id = await categoryRepository.insert(category);
+        category.id = id;
+      }
     } catch (e) {
       rethrow;
     }
