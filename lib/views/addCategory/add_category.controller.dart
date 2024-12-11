@@ -14,8 +14,14 @@ class AddCategoryController {
   final bottomController = GFBottomSheetController();
   List<String> iconsKey = iconMap.keys.toList();
   final CategoryRepository repository = CategoryRepository();
+  Signal<int?> categoryId = Signal<int?>(null);
+  late Resource<Category> resource;
 
   Signal<List<String>> listIcon = Signal(iconMap.keys.toList());
+
+  AddCategoryController() {
+    resource = Resource<Category>(fetcher: getCategory, source: categoryId);
+  }
 
   void onSearch(String searchValue) {
     if (searchValue.isEmpty) {
@@ -32,16 +38,32 @@ class AddCategoryController {
     selectedIcon.value = iconName;
   }
 
-  Future<void> saveChanges(BuildContext context, int? categoryId) async {
+  void setCategoryId(int? id) {
+    categoryId.value = id;
+  }
+
+  Future<Category> getCategory() async {
+    if (categoryId.value != null) {
+      Category cat = await repository.getCategory(categoryId.value!);
+      setActiveIcon(cat.icon!);
+      return cat;
+    }
+    return Category();
+  }
+
+  Future<void> saveChanges(BuildContext context) async {
     try {
       if (formKey.currentState!.saveAndValidate()) {
         Map<String, dynamic> values = formKey.currentState!.value;
         Category category = Category.fromJson(values);
-        category.id = categoryId;
+        category.id = categoryId.value;
+        category.date =
+            category.id == null ? DateTime.now() : resource.state.value?.date;
         if (category.id == null) {
           category.date = DateTime.now();
         }
         await repository.saveCategory(category);
+        if (!context.mounted) return;
         context.pop(true);
         GFToast.showToast(
           'Cambios guardados.',

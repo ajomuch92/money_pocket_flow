@@ -21,10 +21,15 @@ class AddCategory extends StatefulWidget {
 }
 
 class _AddCategoryState extends State<AddCategory> {
-  final AddCategoryController controller = AddCategoryController();
+  final AddCategoryController controller = AddCategoryController()..categoryId;
+
+  @override
+  void initState() {
+    controller.setCategoryId(widget.categoryId);
+    super.initState();
+  }
 
   Future<String?> showIconSelector(BuildContext context) async {
-    controller.onSearch('');
     var result = await showModalBottomSheet<String>(
       context: context,
       useSafeArea: true,
@@ -170,118 +175,145 @@ class _AddCategoryState extends State<AddCategory> {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
-          child: FormBuilder(
-            key: controller.formKey,
-            child: Column(
-              children: [
-                const GFTypography(
-                  text: 'Nombre categoría',
-                  type: GFTypographyType.typo5,
-                  showDivider: false,
-                ),
-                FormBuilderTextField(
-                  name: 'name',
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                  ),
-                  validator: (val) {
-                    if (val!.isEmpty) {
-                      return 'This field is required';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GFTypography(
-                  text: 'Color',
-                  type: GFTypographyType.typo5,
-                  showDivider: false,
-                ),
-                FormBuilderColorPickerField(
-                  name: 'color',
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
-                    ),
-                  ),
-                  colorPickerType: ColorPickerType.materialPicker,
-                  valueTransformer: (color) {
-                    if (color != null) {
-                      return color.asHexString;
-                    }
-                    return '';
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GFTypography(
-                  text: 'Icono',
-                  type: GFTypographyType.typo5,
-                  showDivider: false,
-                ),
-                FormBuilderField(
-                  name: "icon",
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                  builder: (FormFieldState<dynamic> field) {
-                    return InkWell(
-                      onTap: () async {
-                        final result = await showIconSelector(context);
-                        field.didChange(result);
-                      },
-                      child: DottedBorder(
-                        color: Colors.blueGrey,
-                        strokeWidth: 3.0,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        child: SignalBuilder(
-                          signal: controller.selectedIcon,
-                          builder: (context, selectedIcon, _) {
-                            return Container(
-                              width: 150,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                color: selectedIcon.isNotEmpty
-                                    ? Colors.white10
-                                    : Colors.grey.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(7),
+          child: ResourceBuilder(
+              resource: controller.resource,
+              builder: (context, resourceState) {
+                return resourceState.on(
+                    ready: (category) {
+                      return FormBuilder(
+                        key: controller.formKey,
+                        initialValue: {
+                          'name': category.name,
+                          'icon': category.icon,
+                          'color': category.color != null
+                              ? HexColor(category.color!)
+                              : null,
+                        },
+                        child: Column(
+                          children: [
+                            const GFTypography(
+                              text: 'Nombre categoría',
+                              type: GFTypographyType.typo5,
+                              showDivider: false,
+                            ),
+                            FormBuilderTextField(
+                              name: 'name',
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 10),
                               ),
-                              child: selectedIcon.isNotEmpty
-                                  ? Icon(
-                                      MdiIcons.fromString(selectedIcon),
-                                      size: 64,
-                                    )
-                                  : Container(),
-                            );
-                          },
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return 'This field is required';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const GFTypography(
+                              text: 'Color',
+                              type: GFTypographyType.typo5,
+                              showDivider: false,
+                            ),
+                            FormBuilderColorPickerField(
+                              name: 'color',
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15,
+                                  horizontal: 10,
+                                ),
+                              ),
+                              colorPickerType: ColorPickerType.materialPicker,
+                              valueTransformer: (color) {
+                                if (color != null) {
+                                  return color.asHexString;
+                                }
+                                return '';
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const GFTypography(
+                              text: 'Icono',
+                              type: GFTypographyType.typo5,
+                              showDivider: false,
+                            ),
+                            FormBuilderField(
+                              name: "icon",
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              builder: (FormFieldState<dynamic> field) {
+                                return InkWell(
+                                  onTap: () async {
+                                    controller
+                                        .setActiveIcon(category.icon ?? '');
+                                    controller.onSearch('');
+                                    final result =
+                                        await showIconSelector(context);
+                                    field.didChange(result);
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.blueGrey,
+                                    strokeWidth: 3.0,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    child: SignalBuilder(
+                                      signal: controller.selectedIcon,
+                                      builder: (context, selectedIcon, _) {
+                                        return Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            color: selectedIcon.isNotEmpty
+                                                ? Colors.white10
+                                                : Colors.grey.withOpacity(0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                          ),
+                                          child: selectedIcon.isNotEmpty
+                                              ? Icon(
+                                                  MdiIcons.fromString(
+                                                      selectedIcon),
+                                                  size: 64,
+                                                )
+                                              : Container(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
+                      );
+                    },
+                    error: (e, t) => const ErrorEmpty(
+                        message: 'Hubo un error al cargar la categoría'),
+                    loading: () => const Center(
+                          child: GFLoader(),
+                        ));
+              }),
         ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10),
         child: GFButton(
           onPressed: () {
-            controller.saveChanges(context, widget.categoryId);
+            controller.saveChanges(context);
           },
           text: 'Guardar cambios',
           size: 48,
