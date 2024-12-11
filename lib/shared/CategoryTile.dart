@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_color/flutter_color.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:money_pocket_flow/models/index.dart';
+import 'package:money_pocket_flow/utils/bus.dart';
 
 class CategoryTile extends StatelessWidget {
   final Category category;
@@ -29,9 +31,10 @@ class CategoryTile extends StatelessWidget {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
           border: Border.all(
-              color: category.color != null
-                  ? HexColor(category.color!)
-                  : Colors.black),
+            color: category.color != null
+                ? HexColor(category.color!)
+                : Colors.black,
+          ),
         ),
         child: Center(
           child: Icon(
@@ -43,7 +46,15 @@ class CategoryTile extends StatelessWidget {
           ),
         ),
       ),
-      trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+      trailing: IconButton(
+          onPressed: () {
+            context.push('/edit-category/${category.id}').then((value) {
+              if (value == true) {
+                EventModel.eventBus.fire(EventModel(name: 'reload-categories'));
+              }
+            });
+          },
+          icon: const Icon(Icons.edit)),
     );
   }
 }
