@@ -11,4 +11,10 @@ final routes = GoRouter(routes: [
     path: '/new-category',
     builder: (context, state) => const AddCategory(),
   ),
+  GoRoute(
+    path: '/edit-category/:categoryId',
+    builder: (context, state) => AddCategory(
+      categoryId: int.tryParse(state.pathParameters['categoryId'] ?? ''),
+    ),
+  ),
 ], initialLocation: '/');

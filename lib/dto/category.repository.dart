@@ -19,6 +19,15 @@ class CategoryRepository {
     }
   }
 
+  Future<Category> getCategory(int categoryId) async {
+    try {
+      Category category = await categoryRepository.getOneById(categoryId);
+      return category;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   saveCategory(Category category) async {
     try {
       if (category.id != null) {
