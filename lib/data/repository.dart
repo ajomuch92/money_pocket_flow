@@ -35,6 +35,16 @@ class Repository<T extends BaseEntity> {
     );
   }
 
+  Future<T> getOneById(int id) async {
+    final db = await _dbManager.database;
+    final result = await db.query(_tableName, where: 'id = ?', whereArgs: [id]);
+    final entity = entityFactory();
+    if (result.isNotEmpty) {
+      entity.fromMap(result[0]);
+    }
+    return entity;
+  }
+
   Future<List<T>> getAll(
       {bool? distinct,
       List<String>? columns,
