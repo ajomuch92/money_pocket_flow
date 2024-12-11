@@ -18,7 +18,7 @@ class _CategoryState extends State<Category> {
 
   @override
   void dispose() async {
-    await controller.dispose();
+    // await controller.dispose();
     super.dispose();
   }
 
@@ -40,10 +40,11 @@ class _CategoryState extends State<Category> {
                   );
                 }
                 return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return CategoryTile(category: data[index]);
-                    },
-                    itemCount: data.length);
+                  itemBuilder: (context, index) {
+                    return CategoryTile(category: data[index]);
+                  },
+                  itemCount: data.length,
+                );
               },
               error: (error, _) => const Center(
                     child: Text('Hubo un error al cargar las configuraciones'),
