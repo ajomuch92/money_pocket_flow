@@ -40,4 +40,12 @@ class CategoryRepository {
       rethrow;
     }
   }
+
+  deleteCategory(int categoryId) async {
+    try {
+      await categoryRepository.delete(categoryId);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

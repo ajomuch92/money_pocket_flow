@@ -171,6 +171,15 @@ class _AddCategoryState extends State<AddCategory> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
+        actions: widget.categoryId != null
+            ? [
+                IconButton(
+                    onPressed: () {
+                      controller.deleteCategory(context);
+                    },
+                    icon: const Icon(Icons.delete))
+              ]
+            : null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

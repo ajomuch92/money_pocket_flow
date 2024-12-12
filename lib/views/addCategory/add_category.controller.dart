@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
@@ -90,6 +91,45 @@ class AddCategoryController {
     } catch (e) {
       GFToast.showToast(
         'Hubo un error al guardar tus cambios.',
+        context,
+        toastPosition: GFToastPosition.BOTTOM,
+        textStyle: const TextStyle(fontSize: 16, color: GFColors.WHITE),
+        backgroundColor: GFColors.DANGER,
+        trailing: const Icon(
+          Icons.error,
+          color: GFColors.WHITE,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteCategory(BuildContext context) async {
+    if (categoryId.value == null || !context.mounted) return;
+    try {
+      final answer = await confirm(
+        context,
+        title: const Text('Eliminar'),
+        content: const Text('¿Deseas eliminar esta categoría?'),
+        textOK: const Text('Sí'),
+        textCancel: const Text('No'),
+      );
+      if (answer) {
+        await repository.deleteCategory(categoryId.value!);
+        context.pop(true);
+        GFToast.showToast(
+          'Categoría eliminada.',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+          textStyle: const TextStyle(fontSize: 16, color: GFColors.DARK),
+          backgroundColor: GFColors.LIGHT,
+          trailing: const Icon(
+            Icons.check,
+          ),
+        );
+      }
+    } catch (e) {
+      GFToast.showToast(
+        'Hubo un error al elimina tu categoría.',
         context,
         toastPosition: GFToastPosition.BOTTOM,
         textStyle: const TextStyle(fontSize: 16, color: GFColors.WHITE),
