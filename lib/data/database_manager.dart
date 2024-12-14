@@ -30,19 +30,19 @@ class DatabaseManager {
   // Inicializar la base de datos y crear las tablas dinámicamente.
   Future<Database> createDatabase() async {
     final path = join(await getDatabasesPath(), 'app_database.db');
-    return openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        for (var entry in _entityTableMap.entries) {
-          final fields = BaseEntity.getFields(entry.key);
-          final columns =
-              fields.entries.map((e) => '${e.key} ${e.value}').join(', ');
-          final createTableQuery = 'CREATE TABLE ${entry.value} ($columns)';
-          await db.execute(createTableQuery);
-        }
-      },
-    );
+    return openDatabase(path, version: 2, onCreate: (db, version) async {
+      for (var entry in _entityTableMap.entries) {
+        final fields = BaseEntity.getFields(entry.key);
+        final columns =
+            fields.entries.map((e) => '${e.key} ${e.value}').join(', ');
+        final createTableQuery = 'CREATE TABLE ${entry.value} ($columns)';
+        await db.execute(createTableQuery);
+      }
+    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      if (newVersion == 2) {
+        await db.execute("ALTER TABLE transactions ADD COLUMN categoryId int");
+      }
+    });
   }
 
   static Future<void> initDatabase() async {
