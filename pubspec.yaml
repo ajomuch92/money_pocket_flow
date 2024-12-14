@@ -58,6 +58,7 @@ dependencies:
   dotted_border: ^2.1.0
   fluentui_emoji_icon: ^0.0.2
   confirm_dialog: ^1.0.4
+  separated_column: ^3.0.3
 
 dev_dependencies:
   flutter_test:
