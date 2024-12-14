@@ -31,11 +31,20 @@ class TransactionModel extends BaseEntity {
       'amount': 'REAL',
       'type': 'TEXT',
       'description': 'TEXT',
+      'categoryId': 'INT',
       'favorite': 'INT',
       'date': 'TEXT'
     };
   }
 
   @override
-  void fromMap(Map<String, dynamic> map) => _$TransactionFromJson(map);
+  void fromMap(Map<String, dynamic> map) {
+    TransactionModel trx = _$TransactionFromJson(map);
+    id = trx.id;
+    amount = trx.amount;
+    type = trx.type;
+    description = trx.description;
+    favorite = trx.favorite;
+    date = trx.date;
+  }
 }
