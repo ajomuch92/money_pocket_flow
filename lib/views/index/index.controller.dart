@@ -54,6 +54,7 @@ class IndexController {
 
   void onFloatinActionButton(BuildContext context) {
     if (selectedPage.value == 0) {
+      context.push('/new-trx');
     } else if (selectedPage.value == 1) {
       context.push('/new-category').then((value) {
         if (value == true) {
