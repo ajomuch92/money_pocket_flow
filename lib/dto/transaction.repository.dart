@@ -75,7 +75,7 @@ class TransactionRepository {
         date = DateTime(date.year, date.month, date.day);
       }
       List<Map<String, dynamic>> result = await db.rawQuery(
-          'SELECT b.name, b.color, SUM(a.amount) as amount FROM transactions AS a INNER JOIN categories AS b ON b.id = a.categoryId WHERE a.date > ? GROUP BY b.name, b.color',
+          'SELECT b.name, b.color, b.icon, SUM(a.amount) as amount FROM transactions AS a INNER JOIN categories AS b ON b.id = a.categoryId WHERE a.date > ? GROUP BY b.name, b.color, b.icon',
           [date.toIso8601String()]);
       return result.map((e) => Category.fromCategoryMap(e)).toList();
     } catch (e) {

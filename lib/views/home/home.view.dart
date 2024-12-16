@@ -4,6 +4,7 @@ import 'package:fluentui_emoji_icon/fluentui_emoji_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:money_pocket_flow/shared/CategoryTile.dart';
 import 'package:money_pocket_flow/shared/ErrorEmpty.dart';
 import 'package:money_pocket_flow/views/home/home.controller.dart';
 
@@ -141,24 +142,11 @@ class _HomeState extends State<Home> {
                                                           (context, index) {
                                                         final category =
                                                             categories[index];
-                                                        return ListTile(
-                                                          leading: Text(
-                                                            category.name!,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
-                                                            ),
-                                                          ),
-                                                          trailing: Text(
-                                                            "$currencySymbol ${category.amount!}",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
+                                                        return SingleCategoryTile(
+                                                          category: category,
+                                                          currencySymbol:
+                                                              currencySymbol,
+                                                          editable: false,
                                                         );
                                                       },
                                                       itemCount:

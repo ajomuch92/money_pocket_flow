@@ -43,6 +43,7 @@ class Category extends BaseEntity {
     Category category = Category(
       name: json['name'] as String?,
       color: json['color'] as String?,
+      icon: json['icon'] as String?,
       amount: (json['amount'] as num?)?.toDouble(),
     );
     return category;
