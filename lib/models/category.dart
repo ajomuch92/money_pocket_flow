@@ -9,8 +9,9 @@ class Category extends BaseEntity {
   String? color;
   String? icon;
   DateTime? date;
+  double? amount;
 
-  Category({this.name, this.color, this.icon, this.date});
+  Category({this.name, this.color, this.icon, this.date, this.amount});
 
   @override
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
@@ -36,5 +37,14 @@ class Category extends BaseEntity {
     color = category.color;
     icon = category.icon;
     date = category.date;
+  }
+
+  factory Category.fromCategoryMap(Map<String, dynamic> json) {
+    Category category = Category(
+      name: json['name'] as String?,
+      color: json['color'] as String?,
+      amount: (json['amount'] as num?)?.toDouble(),
+    );
+    return category;
   }
 }
