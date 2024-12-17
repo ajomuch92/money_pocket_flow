@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:money_pocket_flow/views/addCategory/add_category.view.dart';
 import 'package:money_pocket_flow/views/addTransaction/add_transaction.view.dart';
 import 'package:money_pocket_flow/views/index/index.view.dart';
+import 'package:money_pocket_flow/views/listTransactions/list_transactions.view.dart';
 
 final routes = GoRouter(routes: [
   GoRoute(
@@ -27,5 +28,9 @@ final routes = GoRouter(routes: [
     builder: (context, state) => AddTransaction(
       transactionId: int.tryParse(state.pathParameters['transactionId'] ?? ''),
     ),
+  ),
+  GoRoute(
+    path: '/list-transactions',
+    builder: (context, state) => const ListTransactions(),
   ),
 ], initialLocation: '/');

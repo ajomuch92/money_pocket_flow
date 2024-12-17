@@ -4,6 +4,7 @@ import 'package:fluentui_emoji_icon/fluentui_emoji_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:money_pocket_flow/shared/CategoryTile.dart';
 import 'package:money_pocket_flow/shared/ErrorEmpty.dart';
 import 'package:money_pocket_flow/views/home/home.controller.dart';
@@ -113,7 +114,10 @@ class _HomeState extends State<Home> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             IconButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                context
+                                                    .push('/list-transactions');
+                                              },
                                               icon: const Icon(
                                                   Icons.chevron_right),
                                             )
