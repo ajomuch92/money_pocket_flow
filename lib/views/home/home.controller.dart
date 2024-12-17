@@ -1,13 +1,19 @@
+import 'dart:async';
+
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:money_pocket_flow/dto/settings.repository.dart';
 import 'package:money_pocket_flow/dto/transaction.repository.dart';
 import 'package:money_pocket_flow/models/index.dart';
 import 'package:money_pocket_flow/models/utilities_class.dart';
+import 'package:money_pocket_flow/utils/bus.dart';
 
 class HomeController {
   Signal<int> totalExpends = Signal(0);
   Signal<Settings> settings = Signal(Settings());
   Signal<List<bool>> listSelectedOption = Signal([true, false, false]);
+  final EventBus eventBus = EventModel.eventBus;
+  late StreamSubscription eventSubscription;
   late Resource<Settings> resourceSettings;
   late Resource<InOutResult> resourceInOut;
   late Resource<List<Category>> resourceCategories;
@@ -20,6 +26,11 @@ class HomeController {
     resourceCategories =
         Resource(fetcher: getTotalsByCategory, source: listSelectedOption);
     getTotalsByCategory();
+    eventSubscription = eventBus.on<EventModel>().listen((event) {
+      if (event.name == 'reload-home') {
+        refresh();
+      }
+    });
   }
 
   FilterDateType get filterDate {
@@ -50,5 +61,10 @@ class HomeController {
       1 == index,
       2 == index,
     ];
+  }
+
+  void refresh() {
+    resourceInOut.refresh();
+    resourceCategories.refresh();
   }
 }

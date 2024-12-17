@@ -54,7 +54,11 @@ class IndexController {
 
   void onFloatinActionButton(BuildContext context) {
     if (selectedPage.value == 0) {
-      context.push('/new-trx');
+      context.push('/new-trx').then((value) {
+        if (value == true) {
+          _eventBus.fire(EventModel(name: 'reload-home'));
+        }
+      });
     } else if (selectedPage.value == 1) {
       context.push('/new-category').then((value) {
         if (value == true) {
