@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:money_pocket_flow/data/base_entity.dart';
+import 'package:money_pocket_flow/models/category.dart';
 
 part 'transaction.g.dart';
 
@@ -10,14 +11,17 @@ class TransactionModel extends BaseEntity {
   String? type, description;
   bool? favorite;
   DateTime? date;
+  Category? category;
 
-  TransactionModel(
-      {this.categoryId,
-      this.amount,
-      this.type,
-      this.description,
-      this.date,
-      this.favorite});
+  TransactionModel({
+    this.categoryId,
+    this.amount,
+    this.type,
+    this.description,
+    this.date,
+    this.favorite,
+    this.category,
+  });
 
   @override
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
@@ -45,6 +49,7 @@ class TransactionModel extends BaseEntity {
     type = trx.type;
     description = trx.description;
     favorite = trx.favorite;
+    categoryId = trx.categoryId;
     date = trx.date;
   }
 }

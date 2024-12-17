@@ -1,5 +1,6 @@
 import 'package:money_pocket_flow/data/database_manager.dart';
 import 'package:money_pocket_flow/data/repository.dart';
+import 'package:money_pocket_flow/dto/category.repository.dart';
 import 'package:money_pocket_flow/models/index.dart';
 import 'package:money_pocket_flow/models/utilities_class.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,11 +9,16 @@ enum FilterDateType { currentMonth, lastWeek, today }
 
 class TransactionRepository {
   final DatabaseManager dbManager = DatabaseManager();
+  List<Category> listCategories = [];
   late final transactionRepository = Repository<TransactionModel>(
     dbManager,
     'transactions',
     () => TransactionModel(),
   );
+
+  Future<void> loadCategories() async {
+    listCategories = await CategoryRepository().getCategories();
+  }
 
   Future<TransactionModel> getTransaction(int transactionId) async {
     try {
@@ -32,6 +38,48 @@ class TransactionRepository {
         int id = await transactionRepository.insert(transaction);
         transaction.id = id;
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TransactionModel>> getTransactions(
+      TransactionFilter filter) async {
+    try {
+      if (listCategories.isEmpty) {
+        await loadCategories();
+      }
+      List<String> whereStr = [];
+      List<dynamic> whereArgs = [];
+
+      if (filter.type != null) {
+        whereStr.add('type = ?');
+        whereArgs.add(filter.type?.str);
+      }
+      if (filter.categoryId != null) {
+        whereStr.add('categoryId = ?');
+        whereArgs.add(filter.categoryId);
+      }
+      if (filter.initialDate != null) {
+        whereStr.add('date >= ?');
+        whereArgs.add(filter.initialDate?.toIso8601String());
+      }
+      if (filter.endDate != null) {
+        whereStr.add('date <= ?');
+        whereArgs.add(filter.endDate?.toIso8601String());
+      }
+      List<TransactionModel> list = await transactionRepository.getAll(
+        limit: filter.limit,
+        offset: (filter.page ?? 0) * (filter.limit ?? 0),
+        where: whereStr.isNotEmpty ? whereStr.join(' AND ') : null,
+        whereArgs: whereArgs.isNotEmpty ? whereArgs : null,
+      );
+      for (var trx in list) {
+        int index =
+            listCategories.indexWhere((cat) => cat.id == trx.categoryId);
+        trx.category = index != -1 ? listCategories[index] : null;
+      }
+      return list;
     } catch (e) {
       rethrow;
     }
