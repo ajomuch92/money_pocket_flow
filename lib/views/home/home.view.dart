@@ -6,6 +6,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:money_pocket_flow/shared/CategoryTile.dart';
+import 'package:money_pocket_flow/shared/DonutChart.dart';
 import 'package:money_pocket_flow/shared/ErrorEmpty.dart';
 import 'package:money_pocket_flow/views/home/home.controller.dart';
 
@@ -86,9 +87,36 @@ class _HomeState extends State<Home> {
                                               }),
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 200.0,
-                                        child: Placeholder(),
+                                      Center(
+                                        child: ResourceBuilder(
+                                          resource:
+                                              controller.resourceCategories,
+                                          builder: (context, categoriesState) {
+                                            return categoriesState.on(
+                                                ready: (categories) => categories
+                                                        .isEmpty
+                                                    ? const ErrorEmpty(
+                                                        message:
+                                                            'No hay transacciones para mostrar',
+                                                        fullHeight: false,
+                                                        child:
+                                                            FluentUiEmojiIcon(
+                                                          fl: Fluents
+                                                              .flFaceWithDiagonalMouth,
+                                                          w: 50,
+                                                          h: 50,
+                                                        ))
+                                                    : DonutChart(
+                                                        categories: categories,
+                                                      ),
+                                                error: (e, t) => const ErrorEmpty(
+                                                    message:
+                                                        'Hubo un error al cargar los detalles'),
+                                                loading: () => const Center(
+                                                      child: GFLoader(),
+                                                    ));
+                                          },
+                                        ),
                                       ),
                                       ListTile(
                                         title: const Text('Gastos'),
