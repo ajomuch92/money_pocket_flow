@@ -50,7 +50,13 @@ class _AddTransactionState extends State<AddTransaction> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: widget.transactionId != null
-            ? [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))]
+            ? [
+                IconButton(
+                    onPressed: () {
+                      controller.deleteTransaction(context);
+                    },
+                    icon: const Icon(Icons.delete))
+              ]
             : null,
       ),
       body: Padding(
@@ -64,7 +70,10 @@ class _AddTransactionState extends State<AddTransaction> {
                   return FormBuilder(
                     key: controller.formKey,
                     initialValue: {
-                      ...transaction.toJson(),
+                      'amount': '${transaction.amount ?? ''}',
+                      'description': transaction.description ?? '',
+                      'type': transaction.type,
+                      'categoryId': transaction.categoryId,
                       'date': transaction.date ?? DateTime.now(),
                     },
                     child: SeparatedColumn(

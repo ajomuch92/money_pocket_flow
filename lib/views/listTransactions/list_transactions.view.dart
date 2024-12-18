@@ -182,6 +182,9 @@ class _ListTransactionsState extends State<ListTransactions> {
                           )),
                           child: ListTile(
                             title: Text('${item.description}'),
+                            onTap: () {
+                              controller.navigateDetails(item, context);
+                            },
                             subtitle: Text(
                                 DateFormat('dd/MM/yyyy').format(item.date!)),
                             trailing: Container(

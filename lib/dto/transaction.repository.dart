@@ -134,6 +134,14 @@ class TransactionRepository {
       rethrow;
     }
   }
+
+  deleteTransaction(int transactionId) async {
+    try {
+      await transactionRepository.delete(transactionId);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 extension DatabaseDoubleExtensions on Database {

@@ -92,4 +92,12 @@ class ListTransactionsController {
       );
     }
   }
+
+  void navigateDetails(TransactionModel trx, BuildContext context) {
+    context.push('/edit-trx/${trx.id}').then((value) {
+      if (value == true) {
+        pagingController.refresh();
+      }
+    });
+  }
 }
