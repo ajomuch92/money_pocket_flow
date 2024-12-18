@@ -29,6 +29,8 @@ class HomeController {
     eventSubscription = eventBus.on<EventModel>().listen((event) {
       if (event.name == 'reload-home') {
         refresh();
+      } else if (event.name == 'settings-saved') {
+        refreshSettings();
       }
     });
   }
@@ -66,5 +68,9 @@ class HomeController {
   void refresh() {
     resourceInOut.refresh();
     resourceCategories.refresh();
+  }
+
+  void refreshSettings() {
+    resourceSettings.refresh();
   }
 }
