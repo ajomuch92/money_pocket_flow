@@ -118,17 +118,95 @@ class _HomeState extends State<Home> {
                                           },
                                         ),
                                       ),
-                                      ListTile(
-                                        title: const Text('Gastos'),
-                                        trailing: Text(
-                                            '${currencySymbol} ${totals.outTotal}'),
-                                      ),
-                                      ListTile(
-                                        title: const Text('Ingresos'),
-                                        trailing: Text(
-                                            '${currencySymbol} ${totals.inTotal}'),
+                                      const Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Tooltip(
+                                            message: 'Ingresos',
+                                            child: Container(
+                                              height: 100,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Stack(
+                                                children: [
+                                                  const Positioned(
+                                                    right: 10,
+                                                    top: 0,
+                                                    child: Text(
+                                                      '↙︎',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 24,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      '${currencySymbol} ${totals.inTotal}',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 32,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Tooltip(
+                                            message: 'Gastos',
+                                            child: Container(
+                                              height: 100,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Stack(
+                                                children: [
+                                                  const Positioned(
+                                                    right: 10,
+                                                    top: 0,
+                                                    child: Text(
+                                                      '↗︎',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 24,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      '${currencySymbol} ${totals.outTotal}',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 32,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const Divider(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 15),
@@ -141,16 +219,22 @@ class _HomeState extends State<Home> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            IconButton(
-                                              onPressed: () {
+                                            InkWell(
+                                              child: const Text(
+                                                'Ver todos',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                              onTap: () {
                                                 context
                                                     .push('/list-transactions');
                                               },
-                                              icon: const Icon(
-                                                  Icons.chevron_right),
-                                            )
+                                            ),
                                           ],
                                         ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
                                       ),
                                       ResourceBuilder(
                                         resource: controller.resourceCategories,
@@ -168,21 +252,30 @@ class _HomeState extends State<Home> {
                                                         w: 50,
                                                         h: 50,
                                                       ))
-                                                  : ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final category =
-                                                            categories[index];
-                                                        return SingleCategoryTile(
-                                                          category: category,
-                                                          currencySymbol:
-                                                              currencySymbol,
-                                                          editable: false,
-                                                        );
-                                                      },
-                                                      itemCount:
-                                                          categories.length,
+                                                  : SizedBox(
+                                                      height: 150,
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        separatorBuilder:
+                                                            (context, index) =>
+                                                                const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          final category =
+                                                              categories[index];
+                                                          return SingleCategoryTile(
+                                                            category: category,
+                                                            currencySymbol:
+                                                                currencySymbol,
+                                                          );
+                                                        },
+                                                        itemCount:
+                                                            categories.length,
+                                                      ),
                                                     ),
                                               error: (e, t) => const ErrorEmpty(
                                                   message:

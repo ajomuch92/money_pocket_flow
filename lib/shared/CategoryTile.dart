@@ -61,44 +61,40 @@ class CategoryTile extends StatelessWidget {
 
 class SingleCategoryTile extends StatelessWidget {
   final Category category;
-  final bool editable;
   final String currencySymbol;
   const SingleCategoryTile(
-      {super.key,
-      required this.category,
-      this.editable = false,
-      this.currencySymbol = '\$'});
+      {super.key, required this.category, this.currencySymbol = '\$'});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      visualDensity: const VisualDensity(vertical: 3),
-      title: Text(
-        category.name!,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+    return Container(
+      height: 150,
+      width: 150,
+      decoration: BoxDecoration(
+        color: HexColor(category.color!).withOpacity(0.5),
+        borderRadius: BorderRadius.circular(10),
       ),
-      leading: Icon(
-        MdiIcons.fromString(category.icon!),
-        size: 24,
-        color:
-            category.color != null ? HexColor(category.color!) : Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            MdiIcons.fromString(category.icon!),
+            size: 32,
+          ),
+          Text(
+            category.name!,
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            '$currencySymbol ${category.amount}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )
+        ],
       ),
-      trailing: editable
-          ? IconButton(
-              onPressed: () {
-                context.push('/edit-category/${category.id}').then((value) {
-                  if (value == true) {
-                    EventModel.eventBus
-                        .fire(EventModel(name: 'reload-categories'));
-                  }
-                });
-              },
-              icon: const Icon(Icons.edit))
-          : Text(category.amount.toString(),
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              )),
     );
   }
 }
