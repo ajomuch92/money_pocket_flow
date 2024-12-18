@@ -6,7 +6,9 @@ import 'package:getwidget/getwidget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/icon_map.dart';
 import 'package:money_pocket_flow/dto/category.repository.dart';
+import 'package:money_pocket_flow/dto/transaction.repository.dart';
 import 'package:money_pocket_flow/models/index.dart';
+import 'package:money_pocket_flow/models/utilities_class.dart';
 
 class AddCategoryController {
   final selectedIcon = Signal('');
@@ -106,6 +108,20 @@ class AddCategoryController {
   Future<void> deleteCategory(BuildContext context) async {
     if (categoryId.value == null || !context.mounted) return;
     try {
+      if (!(await validateCategory(categoryId.value!))) {
+        GFToast.showToast(
+          'No se puede eliminar una categoría asociada a transacciones',
+          context,
+          toastPosition: GFToastPosition.BOTTOM,
+          textStyle: const TextStyle(fontSize: 16, color: GFColors.WHITE),
+          backgroundColor: GFColors.WARNING,
+          trailing: const Icon(
+            Icons.error,
+            color: GFColors.WHITE,
+          ),
+        );
+        return;
+      }
       final answer = await confirm(
         context,
         title: const Text('Eliminar'),
@@ -140,5 +156,11 @@ class AddCategoryController {
         ),
       );
     }
+  }
+
+  Future<bool> validateCategory(int categoryId) async {
+    List<TransactionModel> trxs = await TransactionRepository()
+        .getTransactions(TransactionFilter(categoryId: categoryId));
+    return trxs.isEmpty;
   }
 }
