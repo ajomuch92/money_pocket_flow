@@ -79,6 +79,7 @@ class TransactionRepository {
             listCategories.indexWhere((cat) => cat.id == trx.categoryId);
         trx.category = index != -1 ? listCategories[index] : null;
       }
+      list.sort((a, b) => a.date!.compareTo(b.date!));
       return list;
     } catch (e) {
       rethrow;

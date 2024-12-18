@@ -180,7 +180,8 @@ class _ListTransactionsState extends State<ListTransactions> {
                           )),
                           child: ListTile(
                             title: Text('${item.description}'),
-                            subtitle: Text(DateFormat.yMd().format(item.date!)),
+                            subtitle: Text(
+                                DateFormat('dd/MM/yyyy').format(item.date!)),
                             trailing: Container(
                               padding: const EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
