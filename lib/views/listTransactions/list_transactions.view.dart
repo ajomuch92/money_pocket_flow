@@ -162,7 +162,9 @@ class _ListTransactionsState extends State<ListTransactions> {
                     builderDelegate:
                         PagedChildBuilderDelegate<TransactionModel>(
                       itemBuilder: (context, item, index) {
-                        Color _color = HexColor(item.category!.color!);
+                        Color _color = item.category != null
+                            ? HexColor(item.category!.color!)
+                            : Colors.lightGreenAccent;
                         return Container(
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -207,9 +209,11 @@ class _ListTransactionsState extends State<ListTransactions> {
                               ),
                             ),
                             leading: Icon(
-                              MdiIcons.fromString(
-                                item.category!.icon!,
-                              ),
+                              item.category != null
+                                  ? MdiIcons.fromString(
+                                      item.category!.icon!,
+                                    )
+                                  : MdiIcons.arrowBottomLeft,
                               color: isDarkHsp(_color) ?? false
                                   ? Colors.white
                                   : Colors.black,
